@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'; connect-src 'self'">
+  <title>EPCG and Advance Authorisation export obligation tracker · Open MSME</title>
+  <meta name="description" content="Track the export obligation on an Indian EPCG or Advance Authorisation licence: duty saved, the obligation, exports counted toward it, block-wise and overall fulfilment, the shortfall, and the duty plus interest payable if it is missed.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/accent.css">
+  <link rel="stylesheet" href="assets/layout.css">
+  <script src="assets/theme-init.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <span class="brand"><span class="dot"></span><b>Open MSME</b><span class="tag">export obligation</span></span>
+      <span class="sp"></span>
+      <a class="home" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a>
+      <button class="themer" data-themer type="button">Theme</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Exports &amp; trade compliance · India</div>
+        <h1>Export obligation tracker for EPCG and Advance Authorisation licences</h1>
+        <p class="lede">Enter the authorisation, the duty saved and your shipping bills. This works out how much of the obligation is actually discharged — net of the average export obligation, which is where most of it goes — how long is left in each block, and what duty and interest would become payable if the licence closed short.</p>
+        <div class="who">
+          <span class="pill">Manufacturer-exporters with an EPCG or Advance Authorisation licence</span>
+          <span class="pill reg">FTP 2023 · EPCG · Advance Authorisation · EODC</span>
+          <span class="pill">Runs offline · one binary</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <nav class="seg" id="tabs" aria-label="Sections">
+        <button type="button" data-panel="licence" aria-pressed="true">This licence</button>
+        <button type="button" data-panel="licences" aria-pressed="false">Saved licences</button>
+        <button type="button" data-panel="eodc" aria-pressed="false">Closing the licence</button>
+        <button type="button" data-panel="figures" aria-pressed="false">Figures applied</button>
+      </nav>
+
+      <div class="note" id="banner" hidden></div>
+
+      <!-- This licence ------------------------------------------------- -->
+      <div id="panel-licence">
+        <div class="cols calc">
+          <div>
+            <section class="card">
+              <h2>The authorisation</h2>
+
+              <details class="group" open>
+                <summary>Scheme and identity</summary>
+                <div class="field">
+                  <label for="l-scheme">Scheme</label>
+                  <select id="l-scheme">
+                    <option value="epcg">EPCG — capital goods against a multiple of the duty saved</option>
+                    <option value="advance-authorisation">Advance Authorisation — inputs against export of the resultant product</option>
+                  </select>
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="l-authorisationNo">Authorisation number</label>
+                    <div class="inp"><input type="text" id="l-authorisationNo" autocomplete="off"></div>
+                  </div>
+                  <div class="field">
+                    <label for="l-fileNo">File number</label>
+                    <div class="inp"><input type="text" id="l-fileNo" autocomplete="off"></div>
+                  </div>
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="l-holder">Holder</label>
+                    <div class="inp"><input type="text" id="l-holder" autocomplete="off"></div>
+                  </div>
+                  <div class="field">
+                    <label for="l-iec">Importer-exporter code</label>
+                    <div class="inp"><input type="text" id="l-iec" autocomplete="off"></div>
+                  </div>
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="l-product">Export product</label>
+                    <div class="inp"><input type="text" id="l-product" autocomplete="off"></div>
+                  </div>
+                  <div class="field">
+                    <label for="l-currency">Currency <span class="hint">a label — nothing is converted</span></label>
+                    <div class="inp"><input type="text" id="l-currency" autocomplete="off"></div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="group">
+                <summary>The clock</summary>
+                <div class="field">
+                  <label for="l-issuedOn">Date of issue <span class="hint">every period is counted from it</span></label>
+                  <div class="inp"><input type="date" id="l-issuedOn"></div>
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="l-eoPeriodEndEndorsed">End of the obligation period <span class="hint">as endorsed; leave blank to derive it</span></label>
+                    <div class="inp"><input type="date" id="l-eoPeriodEndEndorsed"></div>
+                  </div>
+                  <div class="field" data-epcg>
+                    <label for="l-block1End">End of the first block <span class="hint">as endorsed; blank to derive</span></label>
+                    <div class="inp"><input type="date" id="l-block1End"></div>
+                  </div>
+                </div>
+                <h3 class="sub">Extensions actually granted</h3>
+                <p class="hint">Only an extension in hand. One applied for is not one granted.</p>
+                <div id="extensions"></div>
+                <button class="btn ghost" type="button" id="add-extension">Add an extension</button>
+              </details>
+
+              <details class="group" open>
+                <summary>The obligation</summary>
+                <div data-epcg>
+                  <div class="field">
+                    <label for="l-category">How the obligation was fixed</label>
+                    <select id="l-category">
+                      <option value="as-endorsed">Use the figure endorsed on the authorisation</option>
+                      <option value="ordinary">Ordinary — derive it from the duty saved</option>
+                      <option value="green-technology">Green technology product — reduced</option>
+                      <option value="specified-area">Unit in a specified area — reduced</option>
+                      <option value="indigenous-sourcing">Capital goods sourced indigenously — reduced</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="l-specificEoEndorsed">Export obligation in value, as endorsed</label>
+                    <div class="inp"><input type="text" id="l-specificEoEndorsed" inputmode="decimal" autocomplete="off"></div>
+                  </div>
+                  <div class="field">
+                    <label for="l-averageEo">Average export obligation a year <span class="hint">the average of same and similar exports in the preceding three licensing years</span></label>
+                    <div class="inp"><input type="text" id="l-averageEo" inputmode="decimal" autocomplete="off"></div>
+                  </div>
+                  <div class="field">
+                    <label class="check"><input type="checkbox" id="l-averageEoExempt"> Exempt from maintaining an average</label>
+                  </div>
+                  <div class="field">
+                    <label for="l-averageEoExemptReason">Reason for the exemption, as endorsed</label>
+                    <div class="inp"><input type="text" id="l-averageEoExemptReason" autocomplete="off"></div>
+                  </div>
+                </div>
+                <div data-aa hidden>
+                  <div class="field">
+                    <label for="l-eoValueEndorsed">Export obligation in value (FOB), as endorsed</label>
+                    <div class="inp"><input type="text" id="l-eoValueEndorsed" inputmode="decimal" autocomplete="off"></div>
+                  </div>
+                  <div class="row2">
+                    <div class="field">
+                      <label for="l-eoQuantity">Export obligation in quantity</label>
+                      <div class="inp"><input type="text" id="l-eoQuantity" inputmode="decimal" autocomplete="off"></div>
+                    </div>
+                    <div class="field">
+                      <label for="l-eoQuantityUnit">Unit</label>
+                      <div class="inp"><input type="text" id="l-eoQuantityUnit" autocomplete="off"></div>
+                    </div>
+                  </div>
+                  <div class="row2">
+                    <div class="field">
+                      <label for="l-normsBasis">Norms basis</label>
+                      <select id="l-normsBasis">
+                        <option value="">not stated</option>
+                        <option value="sion">Standard Input Output Norms</option>
+                        <option value="self-declared">Self-declared, to be fixed</option>
+                        <option value="ad-hoc">Ad hoc norms</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="l-sionReference">Norm reference</label>
+                      <div class="inp"><input type="text" id="l-sionReference" autocomplete="off"></div>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="l-otherInputsCif">Other imported inputs used (CIF) <span class="hint">goes into the denominator of the value-addition formula</span></label>
+                    <div class="inp"><input type="text" id="l-otherInputsCif" inputmode="decimal" autocomplete="off"></div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="group">
+                <summary>Imports and duty saved</summary>
+                <p class="hint">One row per bill of entry. Interest runs from the date each consignment was cleared, so the dates matter as much as the amounts.</p>
+                <div id="imports"></div>
+                <button class="btn ghost" type="button" id="add-import">Add a consignment</button>
+              </details>
+
+              <details class="group">
+                <summary>Exports — shipping bills</summary>
+                <p class="hint">An export counts only if the authorisation number is endorsed on the shipping bill.</p>
+                <div id="shipments"></div>
+                <button class="btn ghost" type="button" id="add-shipment">Add a shipping bill</button>
+              </details>
+
+              <details class="group">
+                <summary>The redemption file</summary>
+                <div class="field">
+                  <label class="check"><input type="checkbox" id="l-caCertifiedStatement"> Export statement certified by a chartered accountant</label>
+                </div>
+                <div class="field">
+                  <label class="check"><input type="checkbox" id="l-rcmcHeld"> Valid registration-cum-membership certificate</label>
+                </div>
+                <div class="field">
+                  <label for="l-bondOrBgDetails">Bond or bank guarantee particulars</label>
+                  <div class="inp"><input type="text" id="l-bondOrBgDetails" autocomplete="off"></div>
+                </div>
+                <div class="field">
+                  <label class="check"><input type="checkbox" id="l-applicationFiled"> Redemption application filed</label>
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="l-filedOn">Filed on</label>
+                    <div class="inp"><input type="date" id="l-filedOn"></div>
+                  </div>
+                  <div class="field">
+                    <label for="l-fileReference">File reference</label>
+                    <div class="inp"><input type="text" id="l-fileReference" autocomplete="off"></div>
+                  </div>
+                </div>
+              </details>
+
+              <details class="group">
+                <summary>Your notes</summary>
+                <div class="field">
+                  <label for="l-notes">Notes</label>
+                  <textarea id="l-notes" rows="4"></textarea>
+                </div>
+              </details>
+
+              <div class="btnrow">
+                <button class="btn primary" type="button" id="recompute">Work it out</button>
+                <button class="btn ghost" type="button" id="save">Save this licence</button>
+                <button class="btn ghost" type="button" id="download">Download the statement</button>
+                <button class="btn ghost" type="button" id="load-epcg">Load the EPCG example</button>
+                <button class="btn ghost" type="button" id="load-aa">Load the Advance Authorisation example</button>
+                <button class="btn ghost" type="button" id="clear">Start a new licence</button>
+              </div>
+            </section>
+          </div>
+
+          <div>
+            <section class="card sticky" id="results" aria-live="polite">
+              <h2>Where it stands</h2>
+              <p class="hint">Fill in the scheme, the date of issue and the obligation, then press <strong>Work it out</strong>.</p>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- Saved licences ----------------------------------------------- -->
+      <div id="panel-licences" hidden>
+        <section class="card">
+          <h2>Saved licences</h2>
+          <div id="licence-list"></div>
+        </section>
+      </div>
+
+      <!-- Closing the licence ------------------------------------------ -->
+      <div id="panel-eodc" hidden>
+        <section class="card">
+          <h2>Closing the licence — the discharge certificate</h2>
+          <p class="hint">An Export Obligation Discharge Certificate is what releases the bond and the bank guarantee you gave Customs. Until it is in hand the licence is open, however much has been exported. This tool assembles the file and says whether it hangs together. <strong>It files nothing.</strong></p>
+          <div id="eodc-list"></div>
+        </section>
+      </div>
+
+      <!-- Figures applied ---------------------------------------------- -->
+      <div id="panel-figures" hidden>
+        <section class="card">
+          <h2>Figures applied, and where they come from</h2>
+          <p class="hint">The Foreign Trade Policy and its Handbook of Procedures are amended often. Every figure below is <strong>indicative</strong> and shown with the paragraph it is taken from and how much weight to put on it. Change any of them; your figures apply to licences created from here on, and a licence already saved keeps the figures it was assessed under.</p>
+          <div id="figures-list"></div>
+          <div class="btnrow">
+            <button class="btn primary" type="button" id="save-policy">Save these figures as the default</button>
+            <button class="btn ghost" type="button" id="reset-policy">Back to the published figures</button>
+          </div>
+          <div class="note" id="policy-note" hidden></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Open MSME · open-source tool for MSMEs in India &amp; the Philippines · MIT</span>
+      <span><a href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a></span>
+    </div>
+  </footer>
+
+  <!-- Row templates. No inline script and no inline style anywhere in them. -->
+  <template id="tpl-import">
+    <div class="rowcard" data-row="import">
+      <div class="row2">
+        <div class="field">
+          <label>Bill of entry<span class="sr">number</span></label>
+          <div class="inp"><input type="text" data-f="billOfEntryNo" autocomplete="off"></div>
+        </div>
+        <div class="field">
+          <label>Cleared on</label>
+          <div class="inp"><input type="date" data-f="clearedOn"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>CIF value</label>
+          <div class="inp"><input type="text" data-f="cifValue" inputmode="decimal" autocomplete="off"></div>
+        </div>
+        <div class="field">
+          <label>Duty, taxes and cess saved</label>
+          <div class="inp"><input type="text" data-f="dutySaved" inputmode="decimal" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Description</label>
+          <div class="inp"><input type="text" data-f="description" autocomplete="off"></div>
+        </div>
+        <div class="field">
+          <label>Installation certificate dated</label>
+          <div class="inp"><input type="date" data-f="installedOn"></div>
+        </div>
+      </div>
+      <div class="rowfoot">
+        <label class="check"><input type="checkbox" data-f="indigenous"> Sourced indigenously</label>
+        <button class="btn ghost small" type="button" data-remove>Remove</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-shipment">
+    <div class="rowcard" data-row="shipment">
+      <div class="row2">
+        <div class="field">
+          <label>Shipping bill<span class="sr">number</span></label>
+          <div class="inp"><input type="text" data-f="shippingBillNo" autocomplete="off"></div>
+        </div>
+        <div class="field">
+          <label>Shipped on</label>
+          <div class="inp"><input type="date" data-f="shippedOn"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>FOB value</label>
+          <div class="inp"><input type="text" data-f="fobValue" inputmode="decimal" autocomplete="off"></div>
+        </div>
+        <div class="field">
+          <label>Product</label>
+          <div class="inp"><input type="text" data-f="product" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Quantity</label>
+          <div class="inp"><input type="text" data-f="quantity" inputmode="decimal" autocomplete="off"></div>
+        </div>
+        <div class="field">
+          <label>Unit</label>
+          <div class="inp"><input type="text" data-f="quantityUnit" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Realised on</label>
+          <div class="inp"><input type="date" data-f="realisedOn"></div>
+        </div>
+        <div class="field">
+          <label>Realised value</label>
+          <div class="inp"><input type="text" data-f="realisedValue" inputmode="decimal" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="rowfoot">
+        <label class="check"><input type="checkbox" data-f="authorisationEndorsed"> Authorisation number endorsed on the bill</label>
+        <label class="check"><input type="checkbox" data-f="sameOrSimilar"> Same or similar product</label>
+        <label class="check"><input type="checkbox" data-f="excluded"> Set aside</label>
+        <button class="btn ghost small" type="button" data-remove>Remove</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-extension">
+    <div class="rowcard" data-row="extension">
+      <div class="row2">
+        <div class="field">
+          <label>What it extends</label>
+          <select data-f="kind">
+            <option value="overall">The whole obligation period</option>
+            <option value="block">A block</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Block number</label>
+          <div class="inp"><input type="text" data-f="blockNo" inputmode="numeric" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Extended to</label>
+          <div class="inp"><input type="date" data-f="newEndsOn"></div>
+        </div>
+        <div class="field">
+          <label>Granted on</label>
+          <div class="inp"><input type="date" data-f="grantedOn"></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Reference</label>
+          <div class="inp"><input type="text" data-f="reference" autocomplete="off"></div>
+        </div>
+        <div class="field">
+          <label>Fee paid</label>
+          <div class="inp"><input type="text" data-f="feePaid" inputmode="decimal" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="rowfoot">
+        <button class="btn ghost small" type="button" data-remove>Remove</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

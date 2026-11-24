@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'">
+  <title>Export obligation and EODC tracker for EPCG and Advance Authorisation · Open MSME</title>
+  <meta name="description" content="A free single-binary tool for Indian manufacturer-exporters: track the export obligation on an EPCG or Advance Authorisation licence. Duty saved, the obligation, exports counted toward it net of the average export obligation, block-wise and overall fulfilment, days left, and the duty plus 15% interest payable if the licence closes short.">
+  <meta name="color-scheme" content="light dark">
+  <meta property="og:title" content="Export obligation and EODC tracker for EPCG and Advance Authorisation · Open MSME">
+  <meta property="og:description" content="See the exact export obligation still to fulfil and the days left in the current block — before the deadline rather than after. One offline binary; your licence data stays on your machine.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/accent.css">
+  <script src="assets/theme-init.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">
+        <span class="dot"></span><b>Open MSME</b><span class="tag">export obligation</span>
+      </a>
+      <span class="sp"></span>
+      <a class="home" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a>
+      <button class="themer" data-themer type="button">Theme</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="eyebrow">Exports &amp; trade compliance · India</div>
+        <h1>Export obligation and EODC tracker for EPCG and Advance Authorisation licences</h1>
+        <p class="lede">You imported a machine at nil duty and owe six times the duty saved in exports over six years. You have shipped more than that — and you are still less than half way, because the export obligation is counted <em>over and above</em> your own average exports, and nobody told you. Enter the authorisation and your shipping bills, and this shows what is actually discharged, how long is left in the current block, and what duty and interest would fall due if the licence closed short.</p>
+        <div class="who">
+          <span class="pill">Manufacturer-exporters with an EPCG or Advance Authorisation licence</span>
+          <span class="pill reg">EPCG &amp; Advance Authorisation · FTP 2023 · Export Obligation · EODC</span>
+          <span class="pill">Runs offline · one binary</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <section class="prose">
+        <h2>What it does</h2>
+        <p>An EPCG authorisation lets you import capital goods at nil customs duty against an export obligation of <strong>six times the duty, taxes and cess saved</strong>, to be fulfilled in six years. An Advance Authorisation lets you import inputs duty-free against an obligation to export the resultant product, in a quantity and a value, within a much shorter period. Both end the same way: a Regional Authority issues an <strong>Export Obligation Discharge Certificate</strong>, the bond and bank guarantee you gave Customs are released, and the licence closes. Or it does not, and the duty saved becomes payable with interest at fifteen percent a year running from the day the goods were cleared.</p>
+        <p>The arithmetic and the clock are the whole product. This tool computes:</p>
+        <ul>
+          <li><strong>What is actually discharged.</strong> Not your gross exports — the part of them that counts. Under FTP 2023 paragraph 5.04(c) an EPCG obligation is discharged <em>over and above</em> the average level of exports of the same and similar products in the preceding three licensing years, and that average has to be maintained in every financial year. So only the <em>excess</em> over the average counts, year by year. It is the single most expensive misunderstanding in the scheme, and it is why the worked example in the tool shows ₹5.74 crore of exports against a ₹3.6 crore obligation that is 44% discharged.</li>
+          <li><strong>The two clocks, which do not line up.</strong> The obligation period and its blocks are counted from the date the authorisation was issued, so they turn over on an anniversary. The average export obligation is measured against the <em>licensing year</em> — 1 April to 31 March. A six-year period beginning in May touches seven licensing years, the first and last of them part years. Both clocks are computed properly, with leap days and long months handled where they fall.</li>
+          <li><strong>The block-wise milestone.</strong> Half the obligation in the first four years, the balance in the fifth and sixth (HBP 2023 paragraph 5.13(a)). Cumulative, counted over its own window, with the run rate in rupees a month that would close it.</li>
+          <li><strong>The exposure, before the deadline rather than after.</strong> The duty saved proportionate to the unfulfilled obligation, plus simple interest at fifteen percent a year, worked out <em>consignment by consignment</em> from the date each one was cleared — because a container cleared two years earlier carries two years more interest, and one total with one date understates the largest part of the liability. It also tells you what a day of delay adds.</li>
+          <li><strong>Early fulfilment, which almost nobody claims.</strong> FTP 2023 paragraph 5.09 condones the <em>whole balance</em> of the obligation where 75% of it and 100% of the average were achieved in half the original period. The deadline is three years into a six-year licence, so by the time anyone thinks about redemption it has gone. The tool computes the figure needed and the date, and says how far off it is.</li>
+          <li><strong>The closure file.</strong> A twelve-item checklist, almost all of it <em>derived</em> rather than ticked: whether every shipping bill offered carries the authorisation number, whether realisation is on file for each, whether an installation certificate is recorded and against which of the two divergent deadlines, whether a block closed short. A checklist of tick boxes tells you what somebody remembered to tick; what stops a redemption is usually what nobody remembered at all.</li>
+        </ul>
+        <p>For an Advance Authorisation it also tracks the <strong>quantity</strong> obligation beside the value one — exporting more rupees does not close a shortfall in pieces — and the <strong>minimum value addition</strong> on the formula in FTP paragraph 4.08, computed on realisation and reported as a projection until the exports are finished, because half way through a period it is necessarily negative.</p>
+
+        <h2>Who it's for</h2>
+        <p>Small and medium manufacturer-exporters in India who hold an EPCG or Advance Authorisation licence and have no in-house trade-compliance desk: engineering and machining units that imported a machining centre, textile and garment units importing yarn and fabric against orders, food processors, pharmaceutical formulators, auto-component makers. Anybody whose obligation is tracked in a spreadsheet that one person maintains, and which is usually discovered to be wrong in the sixth year.</p>
+        <p>You need no accounting system and no internet connection. If your present process is to total the shipping bills and hope, this is the step before that.</p>
+
+        <h2>The rule it implements</h2>
+        <p>The <strong>Foreign Trade Policy 2023</strong> and its <strong>Handbook of Procedures 2023</strong>, notified by the Directorate General of Foreign Trade and in force from 1 April 2023, together with the customs notifications that give the two schemes effect: <strong>Notification No. 26/2023-Customs</strong> for EPCG and <strong>Notification No. 21/2023-Customs</strong> for Advance Authorisation, both dated 1 April 2023.</p>
+        <p>FTP 2023 paragraph 1.01 gives the Policy no sunset date — it runs until amended or replaced — and it <strong>is</strong> amended, by notification and by public notice, several times a year. The provisions this tool computes on:</p>
+        <ul>
+          <li><strong>FTP 5.01(b)</strong> — the EPCG obligation: six times the duties, taxes and cess saved, in six years from the date of issue. <strong>FTP 5.01(d)</strong> — twenty-four months to import, no revalidation. <strong>FTP 5.01(e)</strong> and <strong>5.08</strong> — what counts as duty saved, including the exclusion of IGST paid in cash where credit was not availed, and notional duty on domestic sourcing.</li>
+          <li><strong>FTP 5.04(c)</strong> — the average export obligation: the arithmetic mean of exports of the same and similar products in the preceding three licensing years, to be maintained in every financial year, with only the excess counting toward the specific obligation. <strong>FTP 5.12(a)</strong> — the thirteen sectors exempt from maintaining it.</li>
+          <li><strong>HBP 5.13(a)</strong> — the block-wise milestone: 50% in the block of the first four years, the balance in the block of the fifth and sixth. <strong>HBP 5.13(b)</strong> — three months to intimate the Regional Authority.</li>
+          <li><strong>HBP 5.18</strong> — excess exports in one year may offset a shortfall in another, provided the average is maintained on an overall basis within the block or the period. Both readings are reported.</li>
+          <li><strong>FTP 5.04(d), 5.09, 5.10, 5.11</strong> — the reduced obligations and the early-fulfilment condonation, and <strong>FTP 5.04(l)</strong>, which makes them mutually exclusive.</li>
+          <li><strong>HBP 5.04(a)</strong> and <strong>Notification 26/2023-Customs condition (8)</strong> — the installation certificate, on two different deadlines that nothing reconciles.</li>
+          <li><strong>HBP 5.20(a)</strong> — redemption in ANF 5B, with no filing deadline prescribed. <strong>Notification 26/2023-Customs conditions (6)</strong> — three months to pay on a block that closed short, thirty days to produce evidence, and interest at fifteen percent a year from the date of clearance.</li>
+          <li><strong>HBP 4.40(a)</strong> — the Advance Authorisation obligation period of eighteen months, with <strong>HBP 4.40(c)</strong> and <strong>Appendix 4J</strong> for the cases that get longer or very much shorter ones. <strong>FTP 4.08</strong> and <strong>4.09(i)</strong> — the value-addition formula and the fifteen percent minimum. <strong>HBP 4.43(b)</strong>, <strong>4.46</strong> and <strong>4.47(b)</strong> — redemption in ANF 4F within six months of the period expiring. <strong>HBP 4.49</strong> — regularising a bona fide default. <strong>Notification 21/2023-Customs condition (iv)</strong> — the same fifteen percent from the date the materials were cleared.</li>
+        </ul>
+        <p>Every figure those provisions fix — the multiple, the periods, the block percentages, the reduced multiples, the installation deadlines, the interest rate, the minimum value addition — is defined as a <strong>named constant in one file</strong> in the source, is shown in the tool with the paragraph it comes from <em>and how much weight to put on it</em>, and is <strong>editable</strong>, because the Policy is amended and a licence goes on being governed by the figures that applied to it. The tool states the edition and the date the figures were last read on every screen and on every statement it produces.</p>
+
+        <h2>Install &amp; run</h2>
+        <p>One binary, the Go standard library and nothing else — no database to install, no packages to fetch, no build step for the interface.</p>
+<pre># build it
+git clone https://github.com/sreenivas-sadhu-prabhakara/epcg-advance-authorisation-export-obligation.git
+cd epcg-advance-authorisation-export-obligation
+go build -o epcg-advance-authorisation-export-obligation .
+
+# run it, then open http://127.0.0.1:8080 in a browser
+./epcg-advance-authorisation-export-obligation
+
+# or run it straight from the source
+go run .
+
+# another port, and your licences somewhere of your choosing
+./epcg-advance-authorisation-export-obligation -addr 127.0.0.1:9000 -data ~/exports/licences.json</pre>
+        <p>It serves the interface on <code>127.0.0.1</code> — the machine it is running on, not the network — and keeps your licences in <code>./epcg-advance-authorisation-export-obligation-data.json</code> unless you point <code>-data</code> somewhere else. Stop it with Ctrl-C. There are two worked examples built in: open the tool and press <strong>Load the EPCG example</strong> to see what the arithmetic looks like before typing anything of your own.</p>
+
+        <h2>How it goes in practice</h2>
+        <ol class="steps">
+          <li>Copy the authorisation in once: the scheme, the date of issue, the export obligation endorsed on it, the average export obligation, and the end of the period if it is printed there. Where a figure is endorsed, the tool uses the endorsement and shows you what the policy multiple would have given, so the two can be compared.</li>
+          <li>Add one row per bill of entry: the duty, taxes and cess saved on it and the date it was cleared. The dates matter as much as the amounts, because interest runs from each clearance.</li>
+          <li>Add your shipping bills. For each one, say whether the authorisation number is <em>endorsed on the bill</em> and whether the product is the same or similar to the one the average was fixed on. Those two switches decide whether an export counts at all, and for how much.</li>
+          <li>Press <strong>Work it out</strong>. Read the year-by-year average table first — that is usually where the exports went. Then the block, then the exposure.</li>
+          <li>Work the closure list. Fix what can be fixed, chase what has to be chased, and download the statement for your file or your consultant.</li>
+          <li>Come back each quarter. The tool recomputes against today, so the run rate and the days left are current.</li>
+        </ol>
+
+        <h2>What it stores</h2>
+        <p>One JSON file on your own machine — your licences, your bills of entry, your shipping bills and the figures in force. Nothing else, nowhere else:</p>
+        <ul>
+          <li><strong>No outbound network calls.</strong> Not for fonts, not for analytics, not for updates, not for exchange rates. The interface is built into the binary and served from it.</li>
+          <li><strong>No DGFT or Customs integration.</strong> There is no connection to the DGFT portal, to ICEGATE, or to any trade service. The tool files nothing, submits nothing and fetches nothing, and it cannot obtain a discharge certificate.</li>
+          <li><strong>No currency conversion.</strong> A licence is in one currency and every figure entered against it must be in that currency. The tool applies no exchange rate, because the only honest rate is the one on your own documents.</li>
+          <li><strong>Written whole, atomically.</strong> Every change writes a temporary file beside the data file and renames it over the old one, so an interrupted save leaves the previous file intact, never half of one. The file is written readable only by you.</li>
+          <li><strong>Yours to read.</strong> It is plain, indented JSON, with amounts as decimal strings and dates as <code>yyyy-mm-dd</code>. Your duty figures, your buyers and your prices never leave the machine.</li>
+        </ul>
+
+        <h2>Features</h2>
+        <div class="featgrid">
+          <div class="feat">
+            <h3>The average, netted year by year</h3>
+            <p>Only the excess of same-or-similar exports over the average counts toward the obligation, in each licensing year on its own. Shown as a table of years, with what each one contributed.</p>
+          </div>
+          <div class="feat">
+            <h3>Two clocks, both correct</h3>
+            <p>Anniversary periods from the date of issue for the obligation and its blocks; 1 April to 31 March for the average. Leap days, month-end clamping and part years are all handled and all tested.</p>
+          </div>
+          <div class="feat">
+            <h3>Exposure per consignment</h3>
+            <p>Duty saved proportionate to the shortfall, plus interest from the date each consignment was cleared — and what one more day of delay costs.</p>
+          </div>
+          <div class="feat">
+            <h3>Early fulfilment, computed</h3>
+            <p>The figure and the date that would get the balance condoned under FTP 5.09, while there is still time to act on them.</p>
+          </div>
+          <div class="feat">
+            <h3>The closure file, derived</h3>
+            <p>Twelve items, nearly all worked out from your own data rather than ticked, including the unendorsed shipping bill that is the commonest reason a licence cannot close.</p>
+          </div>
+          <div class="feat">
+            <h3>Both schemes, properly</h3>
+            <p>EPCG with blocks and an average; Advance Authorisation with a quantity obligation and a value-addition test. Each gets the rules that apply to it and none that do not.</p>
+          </div>
+          <div class="feat">
+            <h3>Every figure cited and editable</h3>
+            <p>Each multiple, period and rate is shown with its paragraph and a stated confidence, and can be changed. Your figures apply to new licences; a saved licence keeps the ones it was assessed under.</p>
+          </div>
+          <div class="feat">
+            <h3>A statement you can file</h3>
+            <p>A plain-text statement of the whole position, with the working, the closure list, the figures applied and the assumptions. It prints anywhere and cannot go stale.</p>
+          </div>
+        </div>
+
+        <h2>Assumptions</h2>
+        <details class="assumptions">
+          <summary>Every figure, where it comes from, and how much weight to put on it</summary>
+          <p>The defaults below were read against the consolidated FTP 2023 and HBP 2023 chapters the DGFT publishes, and against the customs notifications that give the schemes effect, <strong>on 24 November 2026</strong>. That is the date after which no amendment has been checked. Read it as the age of the defaults, and confirm anything that matters against the current text or against the endorsement on your own authorisation, which governs.</p>
+          <p><strong>EPCG obligation: 6 times the duties, taxes and cess saved, in 6 years from the date of issue</strong> — FTP 2023 para 5.01(b); Notification 26/2023-Customs condition (4).</p>
+          <p><strong>Block-wise: 50% in the block of the 1st to 4th year, the balance in the 5th and 6th</strong> — HBP 2023 para 5.13(a).</p>
+          <p><strong>Reduced obligations: green technology products 75% of it (4.5 times)</strong> — FTP 5.10, with the list of thirteen qualifying items at HBP 5.26; <strong>units in Arunachal Pradesh, Assam, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, Tripura, Jammu &amp; Kashmir and Ladakh, 25% of it (1.5 times)</strong> — FTP 5.11; <strong>capital goods sourced indigenously, 25% less (4.5 times)</strong> — FTP 5.04(d). A quarter less, not a tenth. None of the three reduces the average obligation. <strong>Only one of them, or the early-fulfilment condonation, may be taken</strong> — FTP 5.04(l).</p>
+          <p><strong>Early fulfilment: 75% of the specific obligation and 100% of the average, in half or less of the original period, condones the balance</strong> — FTP 5.09; Notification 26/2023-Customs condition (7). The half is measured on the period as first fixed, not as extended.</p>
+          <p><strong>Installation certificate: three years to the Regional Authority</strong> (HBP 5.04(a), extendable up to the obligation period on a composition fee), but <strong>six months to Customs</strong> (Notification 26/2023-Customs condition (8), three years for spares). The two genuinely diverge and nothing reconciles them, so the tool reports both and puts the customs one first, because it comes first and is the one that produces a demand.</p>
+          <p><strong>A block that closes short: three months to pay</strong> — Notification 26/2023-Customs condition (6), with thirty days to produce evidence of fulfilment. HBP 5.13(c) gives six months for the same payment. The tool applies the shorter, customs-side window and reports the longer one.</p>
+          <p><strong>Advance Authorisation period: 18 months from the date of issue</strong> — HBP 2023 para 4.40(a). <strong>Much shorter periods apply to the inputs in Appendix 4J</strong>, and they run from the date each consignment is <em>cleared</em>: four months for precious metals in the gem and jewellery sector, three for maize, six for tea, coconut oil, raw sugar, wheat and most spices, twelve for silk. Defence, military store, aerospace and nuclear energy get 24 months (HBP 4.40(c)). <strong>If your input is on Appendix 4J, enter the endorsed period — the default would be wrong by a year.</strong></p>
+          <p><strong>Minimum value addition: 15%</strong> — FTP 4.09(i), on the formula at FTP 4.08, VA = ((A − B) ÷ B) × 100, where A is the FOB value of the export <em>realised</em> and B is the CIF value of the inputs plus any other imported input on which drawback is claimed. Different minima apply: tea 50% (FTP 4.09(iv)), spices 25% (4.09(v)), the two Appendix 4D items 8%, gems and jewellery 3.5% to 15% (HBP 4.60). Change the figure if your product is one of those.</p>
+          <p><strong>Redemption: ANF 5B for EPCG</strong> (HBP 5.20(a)), with no filing deadline prescribed; <strong>ANF 4F for Advance Authorisation within six months of the period expiring</strong> (HBP 4.46, 4.47(b)(i) and 4.43(b)), failing which the Handbook warns of a show cause notice. Do not confuse ANF 5B with Appendix 5B, which is a certificate for the <em>issue</em> of an authorisation; the certificate for redemption is Appendix 5C. The application for an Advance Authorisation is ANF 4A in every case; ANF 4B is the norms-fixation application, not a self-declaration form.</p>
+          <p><strong>Interest: 15% per annum, from the date the goods were cleared</strong> — written into Notification 26/2023-Customs condition (6) for EPCG and Notification 21/2023-Customs condition (iv) for Advance Authorisation. Section 28AA of the Customs Act is separately fixed at 15% by Notification 33/2016-Customs (N.T.), which is the rate that applies where the department proceeds by show cause notice instead; the two coincide today and are legally independent. <strong>An authorisation issued before 1 April 2023 runs under a different notification, which this build has not read — check the one quoted on your own bill of entry.</strong></p>
+          <p><strong>Three things in the interest computation are decisions of this tool and not sourced figures, and they are labelled as such everywhere they appear.</strong></p>
+          <ul>
+            <li><strong>Simple, not compound.</strong> Nothing found for this build — not the notifications, not section 28AA, not Notification 33/2016, not any circular or reported decision — states whether this interest is simple or compound. None of those texts contains any compounding language, and simple interest is what practitioners describe; that is a negative finding, not an authority. The tool computes simple interest. If the department compounds it, the figure here is low.</li>
+            <li><strong>What the rate is applied to.</strong> The tool applies it to the whole duty-saved figure you enter. There is a developed line of authority that interest cannot be levied on the additional and special additional customs duty components without an express charging provision, and CBIC Circular 11/2023-Customs took that view under the 2023 settlement scheme. If part of your duty saved is additional duty, special additional duty or IGST, this may overstate the interest — take advice.</li>
+            <li><strong>The end date and the day count.</strong> Neither notification states when interest stops running. HBP 4.50(e) implies the rate applicable on the date of <em>payment</em>, so in practice it runs to payment. The tool computes in calendar days on a 365-day year to the day it is produced for, which is a convention.</li>
+          </ul>
+          <p><strong>Two conventions on the calendar, both overridable.</strong> First, the <strong>last day of a derived period</strong>: neither the Policy nor the Handbook says whether "six years from the date of issue" ends on the sixth anniversary or the day before, practice is not uniform, and the authorisation prints the date. The tool takes the <em>earlier</em> reading, because being wrong by a day in the direction of urgency makes you ship a day early and being wrong the other way makes you miss a deadline — and the moment you enter the endorsed end date the convention is not used at all. Second, the <strong>average obligation in a part year</strong>: FTP 5.04(c) requires it in every financial year and says nothing about a financial year only part of which falls inside the period, so a part year carries a share of the annual average in proportion to its days. Charging a full year's average to a three-week sliver is harsher than any reading supports; charging nothing is more generous.</p>
+          <p><strong>One interpretation worth disagreeing with if you have better advice.</strong> Exports of products <em>other</em> than the one the average was fixed on are counted toward the specific obligation in full, with nothing netted off, because no average was fixed for them to be over and above. The tool says so wherever that figure is non-zero.</p>
+          <p><strong>This tool condones nothing on its own.</strong> The condonation field defaults to zero. The condonation the Policy does provide is FTP 5.09, computed separately and reported as <em>eligibility</em>, never as applied, because a Regional Authority grants it on an application.</p>
+          <p><strong>Three reliefs are named but not computed</strong>, because they turn on facts outside the licence: HBP 5.17 (the average reduced where the whole sector's exports fell by more than 5%), HBP 5.19 (the average suspended and the period extended for the duration of an export ban), and HBP 4.49 (the pro-rata arithmetic for regularising an Advance Authorisation default, which runs on figures a Regional Authority verifies against Appendix 4H).</p>
+        </details>
+
+        <h2>What it does not do</h2>
+        <p>This matters more than the feature list, so it is set out plainly rather than buried.</p>
+        <ul>
+          <li><strong>It has no DGFT portal integration and it does not file an EODC.</strong> There is no connection to the DGFT portal, to ICEGATE or to Customs. It cannot submit an application, cannot register a shipping bill against an authorisation, cannot fetch an e-BRC, and cannot obtain a discharge certificate. It assembles the file and tells you whether it hangs together; you file it.</li>
+          <li><strong>It is not the Regional Authority's reckoning.</strong> What a Regional Authority accepts is its own decision, and on at least two points — how a shortfall in one year interacts with excess in another, and which of two divergent installation deadlines governs — the published texts do not agree with each other. The tool reports both readings rather than choosing one and hiding it.</li>
+          <li><strong>It is only as right as what you type.</strong> There is no scanning and no optical character recognition; every figure is entered by hand. A field left blank is reported as "not enough entered", never silently as satisfied — and a blank average export obligation blocks the closure checklist, because silence is not an exemption.</li>
+          <li><strong>It does not cover</strong> Duty Free Import Authorisation, the Remission of Duties and Taxes on Exported Products scheme, duty drawback, deemed exports, the gem and jewellery provisions of FTP Chapter 4, Export Oriented Units, Special Economic Zones, clubbing of authorisations, or an authorisation issued before 1 April 2023 under an earlier Policy.</li>
+          <li><strong>It computes no fee.</strong> The composition fees for extending a block or a period, and the late fees that go with them, are flat rupee slabs that depend on the duty saved or CIF value and on when the request is made. They are not computed here; the extension you have been <em>granted</em> is what the tool applies.</li>
+          <li><strong>It is not advice.</strong> It is arithmetic with citations. Confirm every figure against the current Foreign Trade Policy, its Handbook of Procedures and the notification quoted on your own bill of entry, and take a consultant's or a lawyer's view on anything that carries real money.</li>
+        </ul>
+
+        <div class="note">The figures this tool applies come from the Foreign Trade Policy and its Handbook of Procedures, which are amended often, and from customs notifications that may themselves be superseded. Every one of them is labelled <strong>indicative</strong>, carries its paragraph, and can be changed. Where a figure here differs from the one in force, or from the endorsement on your own authorisation, that one governs and this tool is wrong. An exposure it reports is an order of magnitude and a reason to act, not a demand — and a clean closure list is not a discharge certificate.</div>
+
+        <h2>Licence</h2>
+        <p>MIT licensed, free forever, and open to read line by line — including the rules it applies, which live in one small package with table-driven tests covering every computation, every boundary, the leap days, the block edges, the financial-year ends and the malformed input nobody expects.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <span>Open MSME · open-source tool for MSMEs in India &amp; the Philippines · MIT</span>
+      <span><a href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a></span>
+    </div>
+  </footer>
+
+  <script src="assets/ui.js"></script>
+</body>
+</html>

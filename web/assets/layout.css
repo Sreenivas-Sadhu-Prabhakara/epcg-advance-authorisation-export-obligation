@@ -1,0 +1,152 @@
+/* Narrow-screen and form rules for this tool's own interface.
+
+   The shared kit dresses a calculator: a column of fields and one result. A
+   licence has sixty fields, a list of bills of entry and a list of shipping
+   bills, so this adds the grouping, the repeating rows and the tables the kit
+   does not have. Nothing here restyles the kit. */
+
+/* Grid and flex children default to min-width:auto, which refuses to shrink
+   below their content, so a card holding a wide table would stretch the whole
+   page sideways. */
+.cols > *, .row2 > * { min-width: 0; }
+
+/* Two fields side by side need the room for it. */
+@media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } }
+
+/* A table that will not fit scrolls inside its own card rather than widening
+   the page. */
+.table-scroll { overflow-x: auto; }
+
+/* Controls the kit's input rules do not reach. */
+input[type="date"] { width: 100%; max-width: 100%; }
+textarea {
+  width: 100%; font: inherit; font-size: .95rem; padding: 11px 13px; border-radius: 9px;
+  border: 1px solid var(--line-2); background: var(--surface); color: var(--ink);
+  resize: vertical; min-height: 2.6em;
+}
+textarea:focus { outline: 2px solid var(--tool); outline-offset: 1px; border-color: var(--tool); }
+
+/* A second-level heading inside a card. */
+section.card h3.sub { margin: 20px 0 6px; font-size: .95rem; }
+
+/* The one-line banner the page reports a problem in. The kit's .note is a
+   warning; this makes a real failure read as one, and a success read as one. */
+.note.bad { border-left-color: var(--bad); color: var(--ink); }
+.note.good { border-left-color: var(--ok); color: var(--ink); }
+
+/* Collapsible groups of fields, so sixty fields are readable on a phone. */
+.group { border-top: 1px solid var(--line); padding: 12px 0 2px; }
+.group:first-of-type { border-top: none; padding-top: 0; }
+.group > summary {
+  cursor: pointer; font-size: .9rem; font-weight: 700; color: var(--ink);
+  padding: 4px 0 10px; list-style: none;
+}
+.group > summary::-webkit-details-marker { display: none; }
+.group > summary::before { content: "+ "; font-family: var(--mono); color: var(--ink-3); }
+.group[open] > summary::before { content: "\2212 "; }
+.group > summary:hover { color: var(--tool-text); }
+
+/* A repeating row — one bill of entry, one shipping bill, one extension. */
+.rowcard {
+  border: 1px solid var(--line); border-left: 3px solid var(--line-2);
+  border-radius: 8px; padding: 12px 12px 4px; margin: 0 0 12px;
+  background: var(--surface-2);
+}
+.rowfoot {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  padding: 2px 0 10px; font-size: .85rem;
+}
+.rowfoot .check { margin: 0; }
+.btn.small { font-size: .8rem; padding: 6px 10px; }
+.rowfoot .btn.small { margin-left: auto; }
+
+/* A checkbox and its label on one line. */
+label.check {
+  display: flex; align-items: center; gap: 8px;
+  font-size: .85rem; font-weight: 600; color: var(--ink-2); cursor: pointer;
+}
+label.check input[type="checkbox"] { width: auto; margin: 0; accent-color: var(--tool); }
+
+/* Visible only to a screen reader: completes a short label without crowding
+   the row. */
+.sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* The standing of something, as a word: met, on track, behind, overdue. */
+.standing {
+  font-family: var(--mono); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .04em; padding: 2px 7px; border-radius: 4px;
+  border: 1px solid var(--line-2); background: var(--surface-2); color: var(--ink-2);
+  white-space: nowrap;
+}
+.standing.met { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+.standing.ontrack { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+.standing.behind { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
+.standing.overdue { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, var(--line)); }
+
+/* A result block inside the results card. */
+.block { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 14px; }
+.block:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+.block h3 { margin: 0 0 8px; font-size: .95rem; }
+.block p { margin: 0 0 8px; font-size: .88rem; color: var(--ink-2); }
+
+/* An alert in the results column. */
+.alert {
+  border: 1px solid var(--line); border-left: 3px solid var(--line-2);
+  border-radius: 8px; padding: 10px 12px; margin: 0 0 10px; background: var(--surface-2);
+}
+.alert h4 { margin: 0 0 4px; font-size: .88rem; }
+.alert p { margin: 0; font-size: .84rem; color: var(--ink-2); }
+.alert.urgent { border-left-color: var(--bad); }
+.alert.warn { border-left-color: var(--warn); }
+.alert.info { border-left-color: var(--ink-3); }
+.alert.good { border-left-color: var(--ok); }
+
+/* A row in the saved-licence list. */
+.lic {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 14px 16px; margin: 0 0 12px; background: var(--surface);
+}
+.lic h3 { margin: 0 0 2px; font-size: 1rem; }
+.lic .meta { font-size: .8rem; color: var(--ink-3); margin: 0 0 8px; }
+.lic .figs { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85rem; color: var(--ink-2); }
+.lic .figs b { font-variant-numeric: tabular-nums; color: var(--ink); }
+.lic .btnrow { margin-top: 12px; }
+
+/* One requirement on the closure checklist. */
+.req {
+  border-top: 1px solid var(--line); padding: 12px 0;
+  display: grid; grid-template-columns: auto 1fr; gap: 10px 12px; align-items: start;
+}
+.req:first-of-type { border-top: none; }
+.req .mark {
+  font-family: var(--mono); font-size: .7rem; text-transform: uppercase;
+  letter-spacing: .04em; padding: 3px 7px; border-radius: 4px; white-space: nowrap;
+  border: 1px solid var(--line-2); background: var(--surface-2); color: var(--ink-2);
+}
+.req .mark.met { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+.req .mark.missing { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, var(--line)); }
+.req .mark.unknown { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
+.req h4 { margin: 0 0 4px; font-size: .9rem; }
+.req p { margin: 0 0 4px; font-size: .84rem; color: var(--ink-2); }
+.req p.action { color: var(--ink); }
+.req p.action::before { content: "\2192 "; color: var(--tool-text); }
+@media (max-width: 560px) { .req { grid-template-columns: 1fr; } }
+
+/* One figure on the "figures applied" page. */
+.fig { border-top: 1px solid var(--line); padding: 14px 0; }
+.fig:first-of-type { border-top: none; }
+.fig h4 { margin: 0 0 4px; font-size: .9rem; }
+.fig .val { font-family: var(--mono); font-size: .85rem; color: var(--tool-text); }
+.fig .src { font-size: .8rem; color: var(--ink-3); margin: 4px 0; }
+.fig .cf {
+  font-family: var(--mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--ink-3);
+}
+.fig p { margin: 6px 0 0; font-size: .84rem; color: var(--ink-2); }
+.fig .field { margin: 8px 0 0; max-width: 22rem; }
+
+/* An empty list says so rather than showing nothing. */
+.empty { font-size: .88rem; color: var(--ink-3); }
